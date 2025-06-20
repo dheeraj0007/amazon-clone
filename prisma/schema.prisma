@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refreshToken      String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+
+  @@index([userId])
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String?   @default("User")
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?   @default("https://avatars.githubusercontent.com/u/124599?v=4")
+  accounts      Account[]
+  sessions      Session[]
+  orders        Order[]
+  Cart          Cart[]
+}
+
+model Product {
+  id          String         @id @default(uuid())
+  title       String
+  price       Float
+  description String
+  category    String
+  image       String
+  rating      Rating         @relation(fields: [ratingId], references: [id], onDelete: Cascade)
+  ratingId    String
+  carts       CartProduct[]
+  orders      OrderProduct[]
+
+  @@index([ratingId])
+}
+
+model Rating {
+  id       String    @id @default(uuid())
+  rate     Float
+  count    Int
+  products Product[]
+}
+
+model Cart {
+  id          String        @id @default(uuid())
+  user        User          @relation(fields: [userId], references: [id])
+  userId      String        @unique
+  CartProduct CartProduct[]
+}
+
+model Order {
+  id        String         @id @default(uuid())
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount    Float
+  createdAt DateTime       @default(now())
+  products  OrderProduct[]
+}
+
+model CartProduct {
+  id        String  @id @default(uuid())
+  cartId    String
+  productId String
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int     @default(1)
+
+  @@unique([cartId, productId])
+}
+
+model OrderProduct {
+  id        String  @id @default(uuid())
+  orderId   String
+  productId String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int     @default(1)
+
+  @@unique([orderId, productId])
+}

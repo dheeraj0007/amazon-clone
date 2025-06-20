@@ -1,7 +1,10 @@
 import prismaClient from "@/app/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, res: NextResponse) {
+interface MyResponseType extends NextResponse {
+  params: Promise<{ action: string }>;
+}
+export async function GET(req: NextRequest, res: MyResponseType) {
   let products = await prismaClient.product.findMany({
     include: {
       rating: true,

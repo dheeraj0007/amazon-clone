@@ -11,7 +11,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <div className="bg-[#232F3E] h-full py-20 mt-10 text-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 p-10 space-y-3 md:space-y-0">
+    <div className="text-sm md:text-base bg-[#232F3E] h-full py-20 mt-10 text-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 p-10 space-y-2 md:space-y-0">
       <div className="space-y-3">
         <p className="text-shadow-amber-500 text-shadow-2xs">Amazon 2.0</p>
         <p className="md:w-[80%]">

@@ -17,6 +17,23 @@ declare module "next-auth" {
     id: string;
   }
 }
+
+const authOptions = {
+  adapter: PrismaAdapter(prisma),
+  callbacks: {
+    async session({ session, user }: { session: any; user: any }) {
+      session.user.id = user.id;
+      return session;
+    },
+  },
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    }),
+  ],
+  secret: process.env.NEXTAUTH_SECRET,
+};
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
   callbacks: {
@@ -33,5 +50,7 @@ const handler = NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET,
 });
+
+export { authOptions };
 
 export { handler as GET, handler as POST };

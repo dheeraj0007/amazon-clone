@@ -75,6 +75,7 @@ model Cart {
   user        User          @relation(fields: [userId], references: [id])
   userId      String        @unique
   CartProduct CartProduct[]
+  amount      Float         @default(0)
 }
 
 model Order {

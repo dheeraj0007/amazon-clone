@@ -1,24 +1,10 @@
-import NextAuth from "next-auth";
+// lib/authOptions.ts
+import { AuthOptions } from "next-auth";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/app/lib/db";
 
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-      name?: string | null;
-      email?: string | null;
-      image?: string | null;
-    };
-  }
-
-  interface User {
-    id: string;
-  }
-}
-
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   callbacks: {
     async session({ session, user }) {
@@ -33,6 +19,4 @@ const handler = NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-});
-
-export { handler as GET, handler as POST };
+};

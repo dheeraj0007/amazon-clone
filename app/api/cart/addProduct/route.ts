@@ -1,13 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../../auth/[...nextauth]/route";
 import prismaClient from "@/app/lib/db";
+import { authOptions } from "@/lib/authOptions";
 
-export async function POST(req: NextRequest, res: NextApiResponse) {
+interface MyResponseType extends NextResponse {
+  params: Promise<{ action: string }>;
+}
+export async function POST(req: NextRequest, res: MyResponseType) {
   try {
     const session = await getServerSession(authOptions);
-    console.log(session.user);
     if (!session?.user) {
       return NextResponse.json({
         status: false,

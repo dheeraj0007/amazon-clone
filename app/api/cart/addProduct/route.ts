@@ -73,14 +73,13 @@ export async function POST(req: NextRequest, res: MyResponseType) {
         });
       }
 
-      // update cart total
       let updatedCart = await prismaClient.cart.update({
         where: {
           id: currCart.id,
         },
         data: {
           amount: {
-            increment: currProduct.price,
+            increment: Math.round(currProduct.price),
           },
         },
       });

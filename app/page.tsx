@@ -31,6 +31,25 @@ export default function Home() {
       }
     } catch (error) {}
   };
+
+  const removeFromCart = async (productId: string) => {
+    try {
+      const res = await fetch(
+        `/api/cart/removeProduct/?productId=${productId}`,
+        {
+          method: "DELETE",
+          headers: { "Content-type": "application/json" },
+        }
+      );
+      const data = await res.json();
+      if (data.status) {
+        toast.success("Product removed from cart");
+        setCartCount(data.cartCount);
+      }
+    } catch (error) {
+      toast.error("Failed to remove product");
+    }
+  };
   const fetchProducts = async () => {
     try {
       const res = await fetch("/api/getProducts");
@@ -68,7 +87,7 @@ export default function Home() {
         <ProductFeed
           products={products}
           addToCart={addToCart}
-          // removeFromCart={removeFromCart}
+          removeFromCart={removeFromCart}
         />
       </main>
       <Footer />

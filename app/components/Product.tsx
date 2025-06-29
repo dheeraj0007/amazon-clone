@@ -46,7 +46,7 @@ function Product(props: {
     }
   });
   return (
-    <div className="relative flex flex-col m-5 bg-white z-30 p-10" key={id}>
+    <div className="relative flex flex-col m-5 bg-white z-30 p-10">
       <p className="absolute top-2 right-2 text-xs italic text-gray-400">
         {category}
       </p>
@@ -65,7 +65,12 @@ function Product(props: {
         {Array(rating)
           .fill(0)
           .map((_, i) => {
-            return <StarIcon className="h-5 text-yellow-500" />;
+            return (
+              <StarIcon
+                key={`star-${id}-${i}`}
+                className="h-5 text-yellow-500 fill-yellow-500"
+              />
+            );
           })}
       </div>
 
@@ -96,7 +101,7 @@ function Product(props: {
             }
             setShowTopLoader(false);
           }}
-          className="mt-auto button  p-2 text-xs md:text-sm bg-gradient-to-b from-yellow-200 to-yellow-400 border border-yellow-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 active:from-yellow-500"
+          className="mt-auto button cursor-pointer p-2 text-xs md:text-sm bg-gradient-to-b from-yellow-200 to-yellow-400 border border-yellow-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 active:from-yellow-500"
         >
           Add to Cart
         </button>
@@ -113,7 +118,7 @@ function Product(props: {
             setButton("remove");
             setShowTopLoader(false);
           }}
-          className="mt-auto button cursor-not-allowed  p-2 text-xs md:text-sm bg-gradient-to-b from-yellow-100 to-yellow-200 border border-yellow-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-yellow-300 active:from-yellow-500"
+          className="mt-auto  button cursor-not-allowed  p-2 text-xs md:text-sm bg-gradient-to-b from-yellow-100 to-yellow-200 border border-yellow-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-yellow-300 active:from-yellow-500"
         >
           Loading!!!
         </button>
@@ -124,11 +129,11 @@ function Product(props: {
           onClick={async () => {
             setButton("loading");
             setShowTopLoader(true);
-            // await removeFromCart(id);
+            await removeFromCart(id);
             setButton("add");
             setShowTopLoader(false);
           }}
-          className="mt-auto button text-white  p-2 text-xs md:text-sm bg-gradient-to-b from-red-200 to-red-400 border border-red-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-red-500 active:from-red-500"
+          className="mt-auto button cursor-pointer text-white  p-2 text-xs md:text-sm bg-gradient-to-b from-red-200 to-red-400 border border-red-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-red-500 active:from-red-500"
         >
           Remove
         </button>

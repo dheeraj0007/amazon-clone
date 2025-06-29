@@ -6,8 +6,9 @@ import Product from "./Product";
 function ProductFeed(props: {
   products: ProductType[];
   addToCart: (productId: string) => void;
+  removeFromCart: (productId: string) => void;
 }) {
-  const { products, addToCart } = props;
+  const { products, addToCart, removeFromCart } = props;
   const [productsArray, setProductsArray] = useState<ProductType[]>([]);
   useEffect(() => {
     const updateProductArrayWithCartState = async () => {
@@ -53,7 +54,7 @@ function ProductFeed(props: {
               image={image}
               id={id}
               addToCart={addToCart}
-              removeFromCart={() => {}}
+              removeFromCart={removeFromCart}
               isAdded={isAdded ? isAdded : false}
             />
           );
@@ -66,7 +67,7 @@ function ProductFeed(props: {
       />
 
       <div className="md:col-span-2">
-        {products
+        {productsArray
           .slice(4, 5)
           .map(
             ({ id, title, price, description, category, image, isAdded }) => {
@@ -79,7 +80,7 @@ function ProductFeed(props: {
                   category={category}
                   image={image}
                   id={id}
-                  removeFromCart={() => {}}
+                  removeFromCart={removeFromCart}
                   addToCart={addToCart}
                   isAdded={isAdded ? isAdded : false}
                 />
@@ -88,7 +89,7 @@ function ProductFeed(props: {
           )}
       </div>
 
-      {products
+      {productsArray
         .slice(5, products.length)
         .map(({ id, title, price, description, category, image, isAdded }) => {
           return (
@@ -101,7 +102,7 @@ function ProductFeed(props: {
               image={image}
               id={id}
               addToCart={addToCart}
-              removeFromCart={() => {}}
+              removeFromCart={removeFromCart}
               isAdded={isAdded ? isAdded : false}
             />
           );
